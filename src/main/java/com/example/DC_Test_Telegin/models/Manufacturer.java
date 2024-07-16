@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,34 +13,35 @@ public class Manufacturer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "manufacturer_id")
-    int manufacturerId;
+    private int id;
     @Column(name = "manufacturer_name")
     @Size(min = 1, max = 40, message = "Минимальный размер имени 1, максимальный 40 символов")
     @NotEmpty
-    String manufacturerName;
+    private String name;
     @Column(name = "year_of_creation")
-    int yearOfCreation;
+    private int yearOfCreation;
     @Column(name = "country")
-    String country;
+    private String country;
     @Column(name = "registration_date")
-    String registrationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime registrationDate;
     @OneToMany(mappedBy = "manufacturer")
-    List<Product> productList;
+    private List<Product> productList;
 
-    public int getManufacturerId() {
-        return manufacturerId;
+    public int getId() {
+        return id;
     }
 
-    public void setManufacturerId(int manufacturerId) {
-        this.manufacturerId = manufacturerId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getManufacturerName() {
-        return manufacturerName;
+    public String getName() {
+        return name;
     }
 
-    public void setManufacturerName(String manufacturerName) {
-        this.manufacturerName = manufacturerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getYearOfCreation() {
@@ -58,11 +60,11 @@ public class Manufacturer {
         this.country = country;
     }
 
-    public String getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 

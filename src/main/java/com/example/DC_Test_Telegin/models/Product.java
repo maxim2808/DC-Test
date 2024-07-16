@@ -10,29 +10,29 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    int id;
+    private int id;
     @Column(name = "product_name")
     @Size(min = 1, max = 50, message = "Минимальный размер имени 1, максимальный 50 символов")
     @NotEmpty
-    String productName;
+    private String productName;
     @Column(name = "price")
     @DecimalMin(value = "0.01", message = "Минимальное значение должно быть минимум 0,01")
-    Double price;
+    private Double price;
     @Column(name = "quantity")
     @Min(value = 0, message = "Минимальное количество 0")
-    int quantity;
+    private int quantity;
     @Column(name = "weight")
     @Min(value = 0, message = "Минимальный вес 0")
-    double weight;
+    private double weight;
     @Column(name = "year_of_release")
     @Min(value = 1950, message = "Минимальный год 1950")
     @Max(value = 2024, message = "Максмимальный год 2024")
-    int yearOfRelease;
+    private int yearOfRelease;
     @Column(name = "registration_date")
-    String registrationDate;
+    private String registrationDate;
     @ManyToOne()
     @JoinColumn(name = "manufacturer_id", referencedColumnName = "manufacturer_id")
-    Manufacturer manufacturer;
+    private Manufacturer manufacturer;
 
     public int getId() {
         return id;
