@@ -2,7 +2,8 @@ package com.example.DC_Test_Telegin.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.beans.factory.annotation.Value;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "product")
@@ -14,7 +15,7 @@ public class Product {
     @Column(name = "product_name")
     @Size(min = 1, max = 50, message = "Минимальный размер имени 1, максимальный 50 символов")
     @NotEmpty
-    private String productName;
+    private String name;
     @Column(name = "price")
     @DecimalMin(value = "0.01", message = "Минимальное значение должно быть минимум 0,01")
     private Double price;
@@ -29,7 +30,8 @@ public class Product {
     @Max(value = 2024, message = "Максмимальный год 2024")
     private int yearOfRelease;
     @Column(name = "registration_date")
-    private String registrationDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime registrationDate;
     @ManyToOne()
     @JoinColumn(name = "manufacturer_id", referencedColumnName = "manufacturer_id")
     private Manufacturer manufacturer;
@@ -42,12 +44,12 @@ public class Product {
         this.id = id;
     }
 
-    public String getProductName() {
-        return productName;
+    public String getName() {
+        return name;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public void setName(String productName) {
+        this.name = productName;
     }
 
     public Double getPrice() {
@@ -82,11 +84,11 @@ public class Product {
         this.yearOfRelease = yearOfRelease;
     }
 
-    public String getRegistrationDate() {
+    public LocalDateTime getRegistrationDate() {
         return registrationDate;
     }
 
-    public void setRegistrationDate(String registrationDate) {
+    public void setRegistrationDate(LocalDateTime registrationDate) {
         this.registrationDate = registrationDate;
     }
 

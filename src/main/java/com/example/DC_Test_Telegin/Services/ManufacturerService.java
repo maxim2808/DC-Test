@@ -34,6 +34,8 @@ public class ManufacturerService {
 
     @Transactional
     public void  editManufacturer(Manufacturer manufacturer, int id) {
+        Manufacturer oldManufacturer = getOneManufacturer(id).get();
+        manufacturer.setRegistrationDate(oldManufacturer.getRegistrationDate());
         manufacturer.setId(id);
         manufacturerRepository.save(manufacturer);
     }
@@ -42,5 +44,7 @@ public class ManufacturerService {
     public void deleteManufacturer(int id) {
         manufacturerRepository.deleteById(id);
     }
+
+
 
 }

@@ -75,4 +75,15 @@ public class Manufacturer {
     public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
+
+    @Override
+    public String toString() {
+        return "Manufacturer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", yearOfCreation=" + yearOfCreation +
+                ", country='" + country + '\'' +
+                ", registrationDate=" + registrationDate +
+                '}';
+    }
 }

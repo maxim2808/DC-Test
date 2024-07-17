@@ -6,6 +6,7 @@ import com.example.DC_Test_Telegin.models.Product;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +31,19 @@ public class ProductService {
 
 
     @Transactional
-    public void save(Product product, int manufacturerId) {
+    public void createProduct (Product product, int manufacturerId) {
         Manufacturer manufacturer = manufacturerService.getOneManufacturer(manufacturerId).get();
+        product.setRegistrationDate(LocalDateTime.now());
         product.setManufacturer(manufacturer);
         productRepository.save(product);
     }
 
     @Transactional
-    public void edit(Product product, int id, int manufacturerId) {
+    public void edit(Product product, int manufacturerId, int id) {
         Manufacturer manufacturer = manufacturerService.getOneManufacturer(manufacturerId).get();
+        Product oldProduct = productRepository.findById(id).get();
         product.setManufacturer(manufacturer);
+        product.setRegistrationDate(oldProduct.getRegistrationDate());
         product.setId(id);
         productRepository.save(product);
     }
