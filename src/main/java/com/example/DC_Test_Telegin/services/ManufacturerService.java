@@ -26,9 +26,9 @@ public class ManufacturerService {
         return manufacturerRepository.findById(id).orElseThrow(ManufacturerNotFoundException::new);
     }
 
-//    public Optional<Manufacturer> getManufacturerByName(String name) {
-//        return manufacturerRepository.findByManufacturerByName(name);
-//    }
+    public Optional<Manufacturer> getManufacturerByName(String name) {
+        return manufacturerRepository.findManufacturerByName(name);
+    }
 
     public List<Manufacturer> getAllManufacturers() {
         return manufacturerRepository.findAll();

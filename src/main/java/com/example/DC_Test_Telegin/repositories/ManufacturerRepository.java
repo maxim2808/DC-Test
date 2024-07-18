@@ -8,6 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ManufacturerRepository extends JpaRepository<Manufacturer, Integer> {
-//    Optional<Manufacturer> findByManufacturerByName(String manufacturerName);
+Optional<Manufacturer> findManufacturerByName(String name);
 
 }

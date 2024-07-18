@@ -4,6 +4,7 @@ import com.example.DC_Test_Telegin.repositories.ProductRepository;
 import com.example.DC_Test_Telegin.models.Manufacturer;
 import com.example.DC_Test_Telegin.models.Product;
 import com.example.DC_Test_Telegin.utils.ManufacturerNotCreatedException;
+import com.example.DC_Test_Telegin.utils.ManufacturerNotFoundException;
 import com.example.DC_Test_Telegin.utils.ProductNotCreatedException;
 import com.example.DC_Test_Telegin.utils.ProductNotFoundException;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,17 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    public List<Product>  findByManufacturer(int manufacturerId) {
+        Manufacturer manufacturer =manufacturerService.getOneManufacturer(manufacturerId);
+        return productRepository.findProductByManufacturer(manufacturer);
+
+    }
+
     public Product findById(int id) {
         return productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
+    }
+    public Optional<Product> findByName(String name) {
+        return productRepository.findProductByName(name);
     }
 
 
@@ -65,6 +75,8 @@ public class ProductService {
         }
         throw new ProductNotCreatedException(errorsMessage.toString());
     }
+
+
 
 
 }

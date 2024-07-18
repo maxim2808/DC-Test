@@ -6,6 +6,7 @@ import com.example.DC_Test_Telegin.models.Manufacturer;
 import com.example.DC_Test_Telegin.utils.ManufacturerErrorResponse;
 import com.example.DC_Test_Telegin.utils.ManufacturerNotCreatedException;
 import com.example.DC_Test_Telegin.utils.ManufacturerNotFoundException;
+import com.example.DC_Test_Telegin.utils.ManufacturerValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,12 @@ import java.util.List;
 public class ManufacturerController {
     final ManufacturerService manufacturerService;
     final ModelMapper modelMapper;
+    final ManufacturerValidator manufacturerValidator;
 
-    public ManufacturerController(ManufacturerService manufacturerService, ModelMapper modelMapper) {
+    public ManufacturerController(ManufacturerService manufacturerService, ModelMapper modelMapper, ManufacturerValidator manufacturerValidator) {
         this.manufacturerService = manufacturerService;
         this.modelMapper = modelMapper;
+        this.manufacturerValidator = manufacturerValidator;
     }
 
     @GetMapping("")
@@ -40,6 +43,7 @@ public class ManufacturerController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> createManufacturer(@RequestBody @Valid ManufacturerDTO manufacturerDTO, BindingResult bindingResult) {
+        manufacturerValidator.validate(manufacturerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             manufacturerService.notCreatedMethod(bindingResult);
         }
@@ -49,6 +53,7 @@ public class ManufacturerController {
 
     @PatchMapping("/edit/{id}")
     public ResponseEntity<HttpStatus> editManufacturer(@RequestBody @Valid ManufacturerDTO manufacturerDTO, BindingResult bindingResult, @PathVariable int id){
+        manufacturerValidator.validate(manufacturerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             manufacturerService.notCreatedMethod(bindingResult);
         }

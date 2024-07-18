@@ -19,19 +19,25 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     final ProductService productService;
-
     final ModelMapper modelMapper;
+    final ProductValidator productValidator;
 
-    public ProductController(ProductService productService,  ModelMapper modelMapper) {
+    public ProductController(ProductService productService, ModelMapper modelMapper, ProductValidator productValidator) {
         this.productService = productService;
-
         this.modelMapper = modelMapper;
+        this.productValidator = productValidator;
     }
 
     @GetMapping("")
     public List<ProductDTO> getProducts() {
         return productService.findAll().stream().map(product -> convertToDTO(product)).toList();
     }
+
+    @GetMapping("/bymanufacturer/{id}")
+    public List<ProductDTO> getManufacturers(@PathVariable("id") int manufacturerId) {
+        return productService.findByManufacturer(manufacturerId).stream().map(product -> convertToDTO(product)).toList();
+    }
+
 
     @GetMapping("/{id}")
     public ProductDTO getProductById(@PathVariable("id") int id) {
@@ -40,7 +46,7 @@ public class ProductController {
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addProduct(@RequestBody @Valid ProductManufacturerDTO productManufacturerDTO, BindingResult bindingResult) {
-
+        productValidator.validate(productManufacturerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
            productService.notCreatedMethod(bindingResult);
         }
@@ -53,6 +59,7 @@ public class ProductController {
     @PatchMapping("/edit/{id}")
     public ResponseEntity<HttpStatus> editProduct(@PathVariable("id") int id, @RequestBody @Valid ProductManufacturerDTO productManufacturerDTO,
                                                   BindingResult bindingResult) {
+        productValidator.validate(productManufacturerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             productService.notCreatedMethod(bindingResult);
         }
@@ -89,7 +96,5 @@ public class ProductController {
         ProductErrorResponse message =new ProductErrorResponse(exception.getMessage(), System.currentTimeMillis());
         return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
     }
-
-
 
 }
