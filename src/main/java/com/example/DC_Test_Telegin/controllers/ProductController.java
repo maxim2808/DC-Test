@@ -59,6 +59,7 @@ public class ProductController {
     @PatchMapping("/edit/{id}")
     public ResponseEntity<HttpStatus> editProduct(@PathVariable("id") int id, @RequestBody @Valid ProductManufacturerDTO productManufacturerDTO,
                                                   BindingResult bindingResult) {
+        productManufacturerDTO.getProduct().setId(id);
         productValidator.validate(productManufacturerDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             productService.notCreatedMethod(bindingResult);
