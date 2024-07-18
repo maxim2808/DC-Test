@@ -17,6 +17,7 @@ public class ProductDTO {
     @Min(value = 1950, message = "Минимальный год 1950")
     @Max(value = 2024, message = "Максмимальный год 2024")
     private int yearOfRelease;
+    String manufacturer;
 
     public int getId() {
         return id;
@@ -64,5 +65,13 @@ public class ProductDTO {
 
     public void setYearOfRelease(int yearOfRelease) {
         this.yearOfRelease = yearOfRelease;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
     }
 }

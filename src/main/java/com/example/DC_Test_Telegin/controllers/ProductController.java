@@ -82,7 +82,9 @@ public class ProductController {
     }
 
     ProductDTO convertToDTO(Product product) {
-        return modelMapper.map(product, ProductDTO.class);
+        ProductDTO productDTO= modelMapper.map(product, ProductDTO.class);
+        productDTO.setManufacturer(product.getManufacturer().getName());
+        return productDTO;
     }
 
     @ExceptionHandler
