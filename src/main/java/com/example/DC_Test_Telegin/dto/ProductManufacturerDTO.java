@@ -1,15 +1,15 @@
 package com.example.DC_Test_Telegin.dto;
 
 public class ProductManufacturerDTO {
-    ProductDTO productDTO;
+    ProductDTO product;
     int manufacturerID;
 
-    public ProductDTO getProductDTO() {
-        return productDTO;
+    public ProductDTO getProduct() {
+        return product;
     }
 
-    public void setProductDTO(ProductDTO productDTO) {
-        this.productDTO = productDTO;
+    public void setProduct(ProductDTO product) {
+        this.product = product;
     }
 
     public int getManufacturerID() {

@@ -1,9 +1,13 @@
 package com.example.DC_Test_Telegin.controllers;
 
-import com.example.DC_Test_Telegin.Services.ProductService;
+import com.example.DC_Test_Telegin.services.ProductService;
 import com.example.DC_Test_Telegin.dto.ProductDTO;
 import com.example.DC_Test_Telegin.dto.ProductManufacturerDTO;
 import com.example.DC_Test_Telegin.models.Product;
+import com.example.DC_Test_Telegin.utils.ManufacturerErrorResponse;
+import com.example.DC_Test_Telegin.utils.ManufacturerNotFoundException;
+import com.example.DC_Test_Telegin.utils.ProductErrorResponse;
+import com.example.DC_Test_Telegin.utils.ProductNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,13 +33,13 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ProductDTO getProductById(@PathVariable("id") int id) {
-        return convertToDTO(productService.findById(id).get());
+        return convertToDTO(productService.findById(id));
     }
 
     @PostMapping("/add")
     public ResponseEntity<HttpStatus> addProduct(@RequestBody ProductManufacturerDTO productManufacturerDTO) {
         int manufacturerId = productManufacturerDTO.getManufacturerID();
-        ProductDTO productDTO = productManufacturerDTO.getProductDTO();
+        ProductDTO productDTO = productManufacturerDTO.getProduct();
         productService.createProduct(convertToProduct(productDTO), manufacturerId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -43,7 +47,7 @@ public class ProductController {
     @PatchMapping("/edit/{id}")
     public ResponseEntity<HttpStatus> editProduct(@PathVariable("id") int id, @RequestBody ProductManufacturerDTO productManufacturerDTO) {
         int manufacturerId = productManufacturerDTO.getManufacturerID();
-        ProductDTO productDTO = productManufacturerDTO.getProductDTO();
+        ProductDTO productDTO = productManufacturerDTO.getProduct();
         productService.edit(convertToProduct(productDTO), manufacturerId, id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -62,6 +66,13 @@ public class ProductController {
     ProductDTO convertToDTO(Product product) {
         return modelMapper.map(product, ProductDTO.class);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ProductErrorResponse> responseEntity(ProductNotFoundException exception){
+        ProductErrorResponse message = new ProductErrorResponse("Продукт с таким id не найден", System.currentTimeMillis());
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+    }
+
 
 
 
