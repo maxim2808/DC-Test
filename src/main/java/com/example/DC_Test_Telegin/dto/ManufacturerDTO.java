@@ -10,7 +10,7 @@ import java.util.List;
 public class ManufacturerDTO {
     private int id;
     @Size(min = 1, max = 40, message = "Минимальный размер имени 1, максимальный 40 символов")
-    @NotEmpty
+    @NotEmpty(message = "Поле не должно быть пустым")
     private String name;
     private int yearOfCreation;
     private String country;

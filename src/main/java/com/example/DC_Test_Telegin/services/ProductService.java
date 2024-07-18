@@ -3,9 +3,13 @@ package com.example.DC_Test_Telegin.services;
 import com.example.DC_Test_Telegin.repositories.ProductRepository;
 import com.example.DC_Test_Telegin.models.Manufacturer;
 import com.example.DC_Test_Telegin.models.Product;
+import com.example.DC_Test_Telegin.utils.ManufacturerNotCreatedException;
+import com.example.DC_Test_Telegin.utils.ProductNotCreatedException;
 import com.example.DC_Test_Telegin.utils.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,7 +58,13 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-
+    public void notCreatedMethod(BindingResult bindingResult){
+        StringBuilder errorsMessage = new StringBuilder();
+        for(FieldError error : bindingResult.getFieldErrors()){
+            errorsMessage.append(error.getField() + " " +error.getDefaultMessage() + ";");
+        }
+        throw new ProductNotCreatedException(errorsMessage.toString());
+    }
 
 
 }

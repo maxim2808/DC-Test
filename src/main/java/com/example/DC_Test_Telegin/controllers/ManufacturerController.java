@@ -4,12 +4,17 @@ import com.example.DC_Test_Telegin.services.ManufacturerService;
 import com.example.DC_Test_Telegin.dto.ManufacturerDTO;
 import com.example.DC_Test_Telegin.models.Manufacturer;
 import com.example.DC_Test_Telegin.utils.ManufacturerErrorResponse;
+import com.example.DC_Test_Telegin.utils.ManufacturerNotCreatedException;
 import com.example.DC_Test_Telegin.utils.ManufacturerNotFoundException;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,13 +39,19 @@ public class ManufacturerController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> createManufacturer(@RequestBody ManufacturerDTO manufacturerDTO) {
+    public ResponseEntity<HttpStatus> createManufacturer(@RequestBody @Valid ManufacturerDTO manufacturerDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            manufacturerService.notCreatedMethod(bindingResult);
+        }
         manufacturerService.saveManufacturer(convertToManufacturer(manufacturerDTO));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<HttpStatus> editManufacturer(@RequestBody ManufacturerDTO manufacturerDTO, @PathVariable int id){
+    public ResponseEntity<HttpStatus> editManufacturer(@RequestBody @Valid ManufacturerDTO manufacturerDTO, BindingResult bindingResult, @PathVariable int id){
+        if (bindingResult.hasErrors()) {
+            manufacturerService.notCreatedMethod(bindingResult);
+        }
         manufacturerService.editManufacturer(convertToManufacturer(manufacturerDTO),id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -67,6 +78,14 @@ public class ManufacturerController {
         ManufacturerErrorResponse message = new ManufacturerErrorResponse("Производитель с таким id не найден", System.currentTimeMillis());
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<ManufacturerErrorResponse> responseEntity(ManufacturerNotCreatedException exception){
+        ManufacturerErrorResponse message =new ManufacturerErrorResponse(exception.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+    }
+
+
 
 
 

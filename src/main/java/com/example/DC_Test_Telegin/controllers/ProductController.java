@@ -1,16 +1,16 @@
 package com.example.DC_Test_Telegin.controllers;
 
+import com.example.DC_Test_Telegin.services.ManufacturerService;
 import com.example.DC_Test_Telegin.services.ProductService;
 import com.example.DC_Test_Telegin.dto.ProductDTO;
 import com.example.DC_Test_Telegin.dto.ProductManufacturerDTO;
 import com.example.DC_Test_Telegin.models.Product;
-import com.example.DC_Test_Telegin.utils.ManufacturerErrorResponse;
-import com.example.DC_Test_Telegin.utils.ManufacturerNotFoundException;
-import com.example.DC_Test_Telegin.utils.ProductErrorResponse;
-import com.example.DC_Test_Telegin.utils.ProductNotFoundException;
+import com.example.DC_Test_Telegin.utils.*;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,10 +19,12 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     final ProductService productService;
+
     final ModelMapper modelMapper;
 
-    public ProductController(ProductService productService, ModelMapper modelMapper) {
+    public ProductController(ProductService productService,  ModelMapper modelMapper) {
         this.productService = productService;
+
         this.modelMapper = modelMapper;
     }
 
@@ -37,7 +39,11 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<HttpStatus> addProduct(@RequestBody ProductManufacturerDTO productManufacturerDTO) {
+    public ResponseEntity<HttpStatus> addProduct(@RequestBody @Valid ProductManufacturerDTO productManufacturerDTO, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+           productService.notCreatedMethod(bindingResult);
+        }
         int manufacturerId = productManufacturerDTO.getManufacturerID();
         ProductDTO productDTO = productManufacturerDTO.getProduct();
         productService.createProduct(convertToProduct(productDTO), manufacturerId);
@@ -45,7 +51,11 @@ public class ProductController {
     }
 
     @PatchMapping("/edit/{id}")
-    public ResponseEntity<HttpStatus> editProduct(@PathVariable("id") int id, @RequestBody ProductManufacturerDTO productManufacturerDTO) {
+    public ResponseEntity<HttpStatus> editProduct(@PathVariable("id") int id, @RequestBody @Valid ProductManufacturerDTO productManufacturerDTO,
+                                                  BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            productService.notCreatedMethod(bindingResult);
+        }
         int manufacturerId = productManufacturerDTO.getManufacturerID();
         ProductDTO productDTO = productManufacturerDTO.getProduct();
         productService.edit(convertToProduct(productDTO), manufacturerId, id);
@@ -74,6 +84,11 @@ public class ProductController {
     }
 
 
+    @ExceptionHandler
+    public ResponseEntity<ProductErrorResponse> responseEntity(ProductNotCreatedException exception){
+        ProductErrorResponse message =new ProductErrorResponse(exception.getMessage(), System.currentTimeMillis());
+        return new ResponseEntity<>(message,HttpStatus.BAD_REQUEST);
+    }
 
 
 

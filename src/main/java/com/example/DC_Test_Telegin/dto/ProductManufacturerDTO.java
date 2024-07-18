@@ -1,6 +1,9 @@
 package com.example.DC_Test_Telegin.dto;
 
+import jakarta.validation.Valid;
+
 public class ProductManufacturerDTO {
+    @Valid
     ProductDTO product;
     int manufacturerID;
 
