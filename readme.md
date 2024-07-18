@@ -20,7 +20,7 @@ git clone https://github.com/maxim2808/DC-Test
 
 ## Конфигурация
 
-1.Если у вас отсутствует база данных то создайте её
+1.Создайте базу данных или копией базы в каталоге с названием database.custom
 
 2.Если в качесиве базы данных используется не PostgreSQL то в pom.xml необходимо добавить зависимость с необходимым драйвером
 
@@ -67,7 +67,7 @@ spring.jpa.properties.hibernate.show_sql=true
 
 spring.mvc.hiddenmethod.filter.enabled=true
 
-6.Необходимо создать таблицы для работы с базой данных, в PostgreSQL запросы выглядят так:
+6.Если база данных новая, то необходимо создать таблицы для работы с базой данных, в PostgreSQL запросы выглядят так:
 
 create table manufacturer(manufacturer_id int primary key  generated always as identity, manufacturer_name varchar(40) not null,
 year_of_creation int, country varchar(50) not null, registration_date timestamp);
