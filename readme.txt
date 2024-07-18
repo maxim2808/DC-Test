@@ -3,8 +3,11 @@
 Это веб-приложение для управления производителями и их продуктами. Приложение предоставляет возможность просмотра, добавления, редактирования и удаления информации о производителях и продуктах.
 
 ## Зависимости
+
 Для запуска приложения вам понадобятся следующие зависимости:
+
 -Java Development Kit (JDK): Убедитесь, что у вас установлена JDK на вашей системе. Spring требует JDK для компиляции и запуска Java-кода. Рекомендуется использовать JDK версии 8 или выше.
+
 -Среда разработки (IDE): Выберите среду разработки, которая поддерживает Java и Spring, к примеру это может быть IntelliJ IDEA.
 
 ## Установка
@@ -26,14 +29,19 @@ git clone https://github.com/maxim2808/DC-Test
 4.Переименуйте файл application.properties.origin в application.properties
 
 5.Заполните недостающие поля:
+
 spring.application.name=DC-Test-Telegin
 
 spring.datasource.driver-class-name="Введите драйвер через который будет производиться взаимодействие с базой данных"
+
 spring.datasource.username="Введите логин от вашей базы данных"
+
 spring.datasource.password="Введите пароль от вашей базы данных"
+
 spring.datasource.url="Введите адрес вашей базы данных"
 
 spring.jpa.properties.hibernate.dialect="Введите диалект для взаимодействия с базой данных"
+
 spring.jpa.properties.hibernate.show_sql="Введите true или false в зависимости от того нужно ли вам отображать sql запросы пользователей в консоли "
 
 
@@ -45,17 +53,22 @@ spring.mvc.hiddenmethod.filter.enabled=true
 spring.application.name=DC-Test-Telegin
 
 spring.datasource.driver-class-name=org.postgresql.Driver
+
 spring.datasource.username=username
+
 spring.datasource.password=password
+
 spring.datasource.url= jdbc:postgresql://localhost:5432/Digital_Chief_Tsialehin_Test
 
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
 spring.jpa.properties.hibernate.show_sql=true
 
 
 spring.mvc.hiddenmethod.filter.enabled=true
 
 6.Необходимо создать таблицы для работы с базой данных, в PostgreSQL запросы выглядят так:
+
 create table manufacturer(manufacturer_id int primary key  generated always as identity, manufacturer_name varchar(40) not null,
 year_of_creation int, country varchar(50) not null, registration_date timestamp);
 
